@@ -32,4 +32,5 @@
 *.out
 *.app
 
-.vscode
+build/
+.vscode/
