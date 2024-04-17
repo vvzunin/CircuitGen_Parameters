@@ -1,4 +1,4 @@
-#include "YosysUtils.h"
+#include "YosysUtils.hpp"
 
 #include <algorithm>
 #include <functional>
@@ -7,7 +7,7 @@
 #include <thread>
 #include <vector>
 
-#include "UtilsCommands.h"
+#include "UtilsCommands.hpp"
 
 // declare of value of static var
 static std::string d_utilWord = "yosys";

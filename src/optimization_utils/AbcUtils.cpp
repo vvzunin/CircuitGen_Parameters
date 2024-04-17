@@ -1,4 +1,4 @@
-#include "AbcUtils.h"
+#include "AbcUtils.hpp"
 
 #include <stdlib.h>
 
@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "UtilsCommands.h"
+#include "UtilsCommands.hpp"
 
 // declare of value of static var
 static std::string d_utilWord = "abc ";

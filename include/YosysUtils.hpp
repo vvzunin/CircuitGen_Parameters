@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "StandartUtil.h"
+#include "StandartUtils.hpp"
 
 /*
 This class is made for basic work with yosys.
