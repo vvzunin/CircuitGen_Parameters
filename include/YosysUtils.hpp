@@ -12,33 +12,29 @@ Using it, it is possible to read verlog file,
 make opt and to write file into verilog
 */
 
-class YosysUtils {
- public:
-  static CommandWorkResult optVerilog(std::string i_inputFileName,
-                                      std::string i_outputFileName,
-                                      std::string i_directory = ".");
-  static CommandWorkResult writeFirrtl(std::string i_inputFileName,
-                                       std::string i_outputFileName,
-                                       std::string i_directory = ".");
+namespace YosysUtils {
+CommandWorkResult optVerilog(std::string i_inputFileName,
+                             std::string i_outputFileName,
+                             std::string i_directory = ".");
+CommandWorkResult writeFirrtl(std::string i_inputFileName,
+                              std::string i_outputFileName,
+                              std::string i_directory = ".");
 
-  // IMPORTANT parseAll here is TRUE
-  static std::vector<StandartCommandInfo> parseCommand(std::string i_command);
+// IMPORTANT parseAll here is TRUE
+std::vector<StandartCommandInfo> parseCommand(std::string i_command);
 
- protected:
-  static CommandWorkResult standartExecutor(
-      std::string i_command, std::vector<StandartCommandInfo> i_info);
+CommandWorkResult standartExecutor(std::string i_command,
+                                   std::vector<StandartCommandInfo> i_info);
 
- private:
-  template <typename... Args>
-  static CommandWorkResult runCommand(
-      const std::string& i_command,
-      CommandWorkResult (*executableFunc)(std::string,
-                                          std::vector<StandartCommandInfo>),
-      Args&&... filenames) {
-    std::string command = format(i_command, filenames...);
+template <typename... Args>
+CommandWorkResult runCommand(const std::string& i_command,
+                             CommandWorkResult (*executableFunc)(
+                                 std::string, std::vector<StandartCommandInfo>),
+                             Args&&... filenames) {
+  std::string command = StandartUtils::format(i_command, filenames...);
 
-    return executableFunc(command, parseCommand(command));
-  }
-};
+  return executableFunc(command, parseCommand(command));
+}
+}  // namespace YosysUtils
 
 #endif

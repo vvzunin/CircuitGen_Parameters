@@ -12,47 +12,41 @@ Using it, it is possible to read verlog file,
 read aiger file, make strash and to write file into
 verilog or aiger
 */
-class AbcUtils {
- public:
-  static CommandWorkResult getStats(std::string i_inputFileName,
-                                    std::string i_libName,
-                                    std::string i_fileDirectory = ".",
-                                    std::string i_libDirectory = ".");
+namespace AbcUtils {
+CommandWorkResult getStats(std::string i_inputFileName, std::string i_libName,
+                           std::string i_fileDirectory = ".",
+                           std::string i_libDirectory = ".");
 
-  static CommandWorkResult resyn2(std::string i_inputFileName,
+CommandWorkResult resyn2(std::string i_inputFileName, std::string i_libName,
+                         std::string i_fileDirectory = ".",
+                         std::string i_libDirectory = ".");
+
+CommandWorkResult optimizeWithLib(std::string i_inputFileName,
                                   std::string i_libName,
                                   std::string i_fileDirectory = ".",
                                   std::string i_libDirectory = ".");
 
-  static CommandWorkResult optimizeWithLib(std::string i_inputFileName,
-                                           std::string i_libName,
-                                           std::string i_fileDirectory = ".",
-                                           std::string i_libDirectory = ".");
+CommandWorkResult verilogToBench(std::string i_inputFileName,
+                                 std::string i_outputFileName,
+                                 std::string i_libDirectory = ".");
 
-  static CommandWorkResult verilogToBench(std::string i_inputFileName,
-                                          std::string i_outputFileName,
-                                          std::string i_libDirectory = ".");
+std::vector<StandartCommandInfo> parseCommand(std::string i_command);
 
-  static std::vector<StandartCommandInfo> parseCommand(std::string i_command);
+CommandWorkResult standartExecutor(std::string i_command,
+                                   std::vector<StandartCommandInfo> i_info);
 
- protected:
-  static CommandWorkResult standartExecutor(
-      std::string i_command, std::vector<StandartCommandInfo> i_info);
+CommandWorkResult runExecutorForStats(std::string i_command,
+                                      std::vector<StandartCommandInfo> i_info);
 
- private:
-  static CommandWorkResult runExecutorForStats(
-      std::string i_command, std::vector<StandartCommandInfo> i_info);
+template <typename... Args>
+CommandWorkResult runCommand(const std::string& i_command,
+                             CommandWorkResult (*executableFunc)(
+                                 std::string, std::vector<StandartCommandInfo>),
+                             Args&&... filenames) {
+  std::string command = StandartUtils::format(i_command, filenames...);
 
-  template <typename... Args>
-  static CommandWorkResult runCommand(
-      const std::string& i_command,
-      CommandWorkResult (*executableFunc)(std::string,
-                                          std::vector<StandartCommandInfo>),
-      Args&&... filenames) {
-    std::string command = format(i_command, filenames...);
-
-    return executableFunc(command, parseCommand(command));
-  }
-};
+  return executableFunc(command, parseCommand(command));
+}
+}  // namespace AbcUtils
 
 #endif

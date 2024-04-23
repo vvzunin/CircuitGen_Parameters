@@ -3,5 +3,5 @@ if [ ! -d "build" ]; then
   mkdir build
 fi
 
-cmake ..
-sudo cmake --build . --target install
+cmake -S . -B ./build 
+cmake --build ./build -j $(nproc)

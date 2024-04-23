@@ -1,15 +1,13 @@
-#include <AbcUtils.hpp>
-
 #include <stdlib.h>
 
+#include <AbcUtils.hpp>
+#include <UtilsCommands.hpp>
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-
-#include <UtilsCommands.hpp>
 
 // declare of value of static var
 static std::string d_utilWord = "abc ";
