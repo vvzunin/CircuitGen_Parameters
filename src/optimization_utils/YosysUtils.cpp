@@ -1,13 +1,12 @@
-#include <YosysUtils.hpp>
 
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <UtilsCommands.hpp>
+#include <YosysUtils.hpp>
 #include <string>
 #include <thread>
 #include <vector>
-
-#include <UtilsCommands.hpp>
 
 // declare of value of static var
 static std::string d_utilWord = "yosys";

@@ -1,24 +1,30 @@
 cmake_minimum_required(VERSION 3.21)
 
+include(cmake/prelude.cmake)
+
 project("OptimizationsVerilogLib"
     VERSION 1.0.0
     LANGUAGES CXX
 )
 
+include(cmake/project-is-top-level.cmake)
+include(cmake/variables.cmake)
+
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
+set(SOURCES
+    src/optimization_utils/AbcUtils.cpp
+    src/optimization_utils/YosysUtils.cpp
+    src/private_headers/UtilsCommands.hpp
+)
+
 if(BUILD_SHARED_LIBS)
-    add_library(${PROJECT_NAME} SHARED)
+    add_library(${PROJECT_NAME} SHARED ${SOURCES})
 else()
-    add_library(${PROJECT_NAME} STATIC)
+    add_library(${PROJECT_NAME} STATIC ${SOURCES})
 endif()
 
-target_sources(${PROJECT_NAME}
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/optimization_utils/AbcUtils.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/optimization_utils/YosysUtils.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/private_headers/UtilsCommands.hpp
-)
+add_library(OptimizationsVerilogLib::OptimizationsVerilogLib ALIAS ${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
@@ -35,26 +41,39 @@ target_include_directories(${PROJECT_NAME}
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+
 set(public_headers
-    include/AbcUtils.hpp
-    include/YosysUtils.hpp
-    include/StandartUtils.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/AbcUtils.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/YosysUtils.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/StandartUtils.hpp
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${public_headers})
 
 # if you haven't included it already
 # definitions of CMAKE_INSTALL_LIBDIR, CMAKE_INSTALL_INCLUDEDIR and others
+include(cmake/utils.cmake)
 include(GNUInstallDirs)
+
+set_if_undefined(OptimizationsVerilogLib_INSTALL_CMAKEDIR
+    "${CMAKE_INSTALL_LIBDIR}/cmake/OptimizationsVerilogLib-${PROJECT_VERSION}" CACHE STRING
+    "Install path for OptimizationsVerilogLib package-related CMake files")
+
+option(OptimizationsVerilogLib_BUILD_EXAMPLES "Build OptimizationsVerilogLib examples" OFF)
+
+set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set_if_undefined(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # install the target and create export-set
 install(TARGETS ${PROJECT_NAME}
     EXPORT "${PROJECT_NAME}Targets"
 
     # these get default values from GNUInstallDirs, no need to set them
-    # RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # bin
-    # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
-    # ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} # bin
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
+
     # except for public headers, as we want them to be inside a library folder
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME} # include/SomeLibrary
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} # include
@@ -67,7 +86,17 @@ install(EXPORT "${PROJECT_NAME}Targets"
     DESTINATION cmake
 )
 
+include(CTest)
+
+if(BUILD_TESTING)
+    add_subdirectory(test)
+endif()
+
 include(CMakePackageConfigHelpers)
+
+if(NOT CMAKE_SKIP_INSTALL_RULES)
+    include(cmake/install-rules.cmake)
+endif()
 
 # generate the version file for the config file
 write_basic_package_version_file(
@@ -88,3 +117,23 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
     DESTINATION cmake
 )
+
+if(PROJECT_IS_TOP_LEVEL)
+    option(BUILD_EXAMPLES "Build examples tree." "${OptimizationsVerilogLib_DEVELOPER_MODE}")
+
+    if(BUILD_EXAMPLES)
+        add_subdirectory(examples)
+    endif()
+endif()
+
+# ---- Developer mode ----
+if(NOT OptimizationsVerilogLib_DEVELOPER_MODE)
+    return()
+elseif(NOT PROJECT_IS_TOP_LEVEL)
+    message(
+        AUTHOR_WARNING
+        "Developer mode is intended for developers of OptimizationsVerilogLib"
+    )
+endif()
+
+include(cmake/dev-mode.cmake)
