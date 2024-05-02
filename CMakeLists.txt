@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.21)
 
-include(cmake/prelude.cmake)
+# include(cmake/prelude.cmake)
 
 project("OptimizationsVerilogLib"
     VERSION 0.5.0
     LANGUAGES CXX
 )
 
-include(cmake/project-is-top-level.cmake)
-include(cmake/variables.cmake)
+# include(cmake/project-is-top-level.cmake)
+# include(cmake/variables.cmake)
 
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
@@ -72,7 +72,7 @@ include(GNUInstallDirs)
 #     "${CMAKE_INSTALL_LIBDIR}/cmake/OptimizationsVerilogLib-${PROJECT_VERSION}" CACHE STRING
 #     "Install path for OptimizationsVerilogLib package-related CMake files")
 
-option(OptimizationsVerilogLib_BUILD_EXAMPLES "Build OptimizationsVerilogLib examples" OFF)
+# option(OptimizationsVerilogLib_BUILD_EXAMPLES "Build OptimizationsVerilogLib examples" OFF)
 
 # set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
 # set_if_undefined(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
@@ -87,7 +87,7 @@ install(TARGETS ${PROJECT_NAME}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # lib
 
     # except for public headers, as we want them to be inside a library folder
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME} # include/SomeLibrary
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} # include/SomeLibrary
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} # include
 )
 
