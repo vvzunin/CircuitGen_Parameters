@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.21)
 include(cmake/prelude.cmake)
 
 project("OptimizationsVerilogLib"
-    VERSION 1.0.0
+    VERSION 0.5.0
     LANGUAGES CXX
 )
 
@@ -49,7 +49,19 @@ set(public_headers
     ${CMAKE_CURRENT_SOURCE_DIR}/include/StandartUtils.hpp
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER ${public_headers})
+set_target_properties(
+    ${PROJECT_NAME} PROPERTIES 
+    # CXX_VISIBILITY_PRESET hidden
+    VISIBILITY_INLINES_HIDDEN YES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    EXPORT_NAME ${PROJECT_NAME}
+    OUTPUT_NAME ${PROJECT_NAME}
+    PUBLIC_HEADER ${public_headers})
+
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
+
 
 # if you haven't included it already
 # definitions of CMAKE_INSTALL_LIBDIR, CMAKE_INSTALL_INCLUDEDIR and others
