@@ -65,17 +65,17 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
 # if you haven't included it already
 # definitions of CMAKE_INSTALL_LIBDIR, CMAKE_INSTALL_INCLUDEDIR and others
-include(cmake/utils.cmake)
+# include(cmake/utils.cmake)
 include(GNUInstallDirs)
 
-set_if_undefined(OptimizationsVerilogLib_INSTALL_CMAKEDIR
-    "${CMAKE_INSTALL_LIBDIR}/cmake/OptimizationsVerilogLib-${PROJECT_VERSION}" CACHE STRING
-    "Install path for OptimizationsVerilogLib package-related CMake files")
+# set_if_undefined(OptimizationsVerilogLib_INSTALL_CMAKEDIR
+#     "${CMAKE_INSTALL_LIBDIR}/cmake/OptimizationsVerilogLib-${PROJECT_VERSION}" CACHE STRING
+#     "Install path for OptimizationsVerilogLib package-related CMake files")
 
 option(OptimizationsVerilogLib_BUILD_EXAMPLES "Build OptimizationsVerilogLib examples" OFF)
 
-set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set_if_undefined(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
+# set_if_undefined(CMAKE_CXX_VISIBILITY_PRESET hidden)
+# set_if_undefined(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # install the target and create export-set
 install(TARGETS ${PROJECT_NAME}
@@ -105,10 +105,6 @@ if(BUILD_TESTING)
 endif()
 
 include(CMakePackageConfigHelpers)
-
-if(NOT CMAKE_SKIP_INSTALL_RULES)
-    include(cmake/install-rules.cmake)
-endif()
 
 # generate the version file for the config file
 write_basic_package_version_file(
@@ -148,4 +144,4 @@ elseif(NOT PROJECT_IS_TOP_LEVEL)
     )
 endif()
 
-include(cmake/dev-mode.cmake)
+# include(cmake/dev-mode.cmake)
