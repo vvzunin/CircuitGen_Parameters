@@ -258,8 +258,11 @@ CommandWorkResult AbcUtils::resyn2(std::string i_inputFileName,
                                    std::string i_libDirectory) {
   std::string real_name = i_inputFileName;
   // if is neccessary, remove .v
-  if (real_name.find(".v") != std::string::npos)
+  if (real_name.find(".v") != std::string::npos) {
     real_name.erase(real_name.size() - 2, 2);
+  } else {
+    i_inputFileName += ".v";
+  }
 
   CommandWorkResult res =
       runCommand(AbcCommands::resyn2Command, runExecutorForStats,
@@ -277,8 +280,11 @@ CommandWorkResult AbcUtils::optimizeWithLib(std::string i_inputFileName,
                                             std::string i_libDirectory) {
   std::string real_name = i_inputFileName;
   // if is neccessary, remove .v
-  if (real_name.find(".v") != std::string::npos)
+  if (real_name.find(".v") != std::string::npos) {
     real_name.erase(real_name.size() - 2, 2);
+  } else {
+    i_inputFileName += ".v";
+  }
 
   CommandWorkResult res =
       runCommand(AbcCommands::balanceOptimizationCommand, runExecutorForStats,
