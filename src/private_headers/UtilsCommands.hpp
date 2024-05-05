@@ -3,7 +3,8 @@
 
 namespace AbcCommands {
 static const char *resyn2Command =
-    "(echo \"read_verilog %/%\" "
+    "cd % "
+    "&& ((echo \"read_verilog %\" "
     "&& echo \"read %/%\" "
     "&& echo \"balance\" "
     "&& echo \"rewrite\" "
@@ -14,29 +15,31 @@ static const char *resyn2Command =
     "&& echo \"balance\" "
     "&& echo \"refactor -z\" "
     "&& echo \"rewrite -z\" "
-    "&& echo \"write_verilog %/%_RESYN2.aig\" "
-    "&& echo \"write_verilog %/%_RESYN2.v\" "
+    "&& echo \"write_verilog %_RESYN2.aig\" "
+    "&& echo \"write_verilog %_RESYN2.v\" "
     "&& echo \"map\" "
-    "&& echo \"print_stats\") | abc";
+    "&& echo \"print_stats\") | abc)";
 
 static const char *balanceOptimizationCommand =
-    "(echo \"read_verilog %/%\" "
+    "cd % "
+    "&& ((echo \"read_verilog %\" "
     "&& echo \"read %/%\" "
     "&& echo \"balance\" "
-    "&& echo \"write_verilog %/%.aig\" "
+    "&& echo \"write_verilog %.aig\" "
     "&& echo \"refactor -z\" "
     "&& echo \"balance -x\" "
     "&& echo \"rewrite -z\" "
-    "&& echo \"write_verilog %/%_BALANCED.aig\" "
-    "&& echo \"write_verilog %/%_BALANCED.v\" "
+    "&& echo \"write_verilog %_BALANCED.aig\" "
+    "&& echo \"write_verilog %_BALANCED.v\" "
     "&& echo \"map\" "
-    "&& echo \"print_stats\") | abc";
+    "&& echo \"print_stats\") | abc)";
 
 static const char *getStatsCommand =
-    "(echo \"read_verilog %/%\" "
+    "cd % "
+    "&& ((echo \"read_verilog %\" "
     "&& echo \"read %/%\" "
     "&& echo \"map\" "
-    "&& echo \"print_stats\") | abc";
+    "&& echo \"print_stats\") | abc)";
 
 static const char *convertVerilogToBench =
     "cd % "

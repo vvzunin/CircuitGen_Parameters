@@ -21,6 +21,7 @@ struct CommandWorkResult {
   std::map<std::string, std::string> commandsOutput;
 };
 
+namespace StandartUtils {
 // link on used code - https://gist.github.com/en4bz/f07ef13706c3ae3a4fb2
 template <class Tuple, std::size_t N>
 struct TuplePrinter {
@@ -49,5 +50,7 @@ std::string format(const std::string& fmt, Args&&... args) {
   TuplePrinter<decltype(t), sizeof...(Args)>::print(fmt, ss, t);
   return ss.str();
 }
+
+}  // namespace StandartUtils
 
 #endif
