@@ -27,8 +27,7 @@ CommandWorkResult optimizeWithLib(std::string i_inputFileName,
                                   std::string i_libDirectory = ".");
 
 CommandWorkResult verilogToBench(std::string i_inputFileName,
-                                 std::string i_outputFileName,
-                                 std::string i_libDirectory = ".");
+                                 std::string i_fileDirectory = ".");
 
 std::vector<StandartCommandInfo> parseCommand(std::string i_command);
 

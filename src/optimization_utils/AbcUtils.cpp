@@ -237,10 +237,17 @@ CommandWorkResult AbcUtils::runExecutorForStats(
 }
 
 CommandWorkResult AbcUtils::verilogToBench(std::string i_inputFileName,
-                                           std::string i_outputFileName,
-                                           std::string i_libDirectory) {
+                                           std::string i_fileDirectory) {
+  std::string real_name = i_inputFileName;
+  // if is neccessary, remove .v
+  if (real_name.find(".v") != std::string::npos) {
+    real_name.erase(real_name.size() - 2, 2);
+  } else {
+    i_inputFileName += ".v";
+  }
+
   return runCommand(AbcCommands::convertVerilogToBench, standartExecutor,
-                    i_libDirectory, i_inputFileName, i_outputFileName);
+                    i_fileDirectory, i_inputFileName, real_name + ".bench");
 }
 
 CommandWorkResult AbcUtils::getStats(std::string i_inputFileName,
@@ -264,10 +271,9 @@ CommandWorkResult AbcUtils::resyn2(std::string i_inputFileName,
     i_inputFileName += ".v";
   }
 
-  CommandWorkResult res =
-      runCommand(AbcCommands::resyn2Command, runExecutorForStats,
-                 i_fileDirectory, i_inputFileName, i_libDirectory, i_libName,
-                 i_fileDirectory, real_name, i_fileDirectory, real_name);
+  CommandWorkResult res = runCommand(
+      AbcCommands::resyn2Command, runExecutorForStats, i_fileDirectory,
+      i_inputFileName, i_libDirectory, i_libName, real_name, real_name);
 
   res.commandsOutput["optimization_type"] = "Resyn2";
 
@@ -289,8 +295,7 @@ CommandWorkResult AbcUtils::optimizeWithLib(std::string i_inputFileName,
   CommandWorkResult res =
       runCommand(AbcCommands::balanceOptimizationCommand, runExecutorForStats,
                  i_fileDirectory, i_inputFileName, i_libDirectory, i_libName,
-                 i_fileDirectory, real_name, i_fileDirectory, real_name,
-                 i_fileDirectory, real_name);
+                 real_name, real_name, real_name);
 
   res.commandsOutput["optimization_type"] = "Balance";
 
