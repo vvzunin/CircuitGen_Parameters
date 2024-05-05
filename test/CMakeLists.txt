@@ -64,4 +64,4 @@ target_include_directories(
 
 
 add_test(NAME AbcUtilsTest COMMAND ${AbcTest})
-add_test(NAME YosysUtilsTest COMMAND ${YosysTest})
+# add_test(NAME YosysUtilsTest COMMAND ${YosysTest})

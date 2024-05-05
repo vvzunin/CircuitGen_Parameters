@@ -4,6 +4,8 @@
 #include <UtilsCommands.hpp>
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
+#include <filesystem>
 #include <iostream>
 #include <map>
 #include <string>
@@ -254,6 +256,15 @@ CommandWorkResult AbcUtils::getStats(std::string i_inputFileName,
                                      std::string i_libName,
                                      std::string i_fileDirectory,
                                      std::string i_libDirectory) {
+  if (i_fileDirectory != ".") {
+    try {
+      i_libDirectory = std::filesystem::canonical(i_libDirectory);
+    } catch (std::exception &e) {
+      std::cerr << "Error occured:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
+  }
+
   return runCommand(AbcCommands::getStatsCommand, runExecutorForStats,
                     i_fileDirectory, i_inputFileName, i_libDirectory,
                     i_libName);
@@ -269,6 +280,15 @@ CommandWorkResult AbcUtils::resyn2(std::string i_inputFileName,
     real_name.erase(real_name.size() - 2, 2);
   } else {
     i_inputFileName += ".v";
+  }
+
+  if (i_fileDirectory != ".") {
+    try {
+      i_libDirectory = std::filesystem::canonical(i_libDirectory);
+    } catch (std::exception &e) {
+      std::cerr << "Error occured:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
   }
 
   CommandWorkResult res = runCommand(
@@ -290,6 +310,15 @@ CommandWorkResult AbcUtils::optimizeWithLib(std::string i_inputFileName,
     real_name.erase(real_name.size() - 2, 2);
   } else {
     i_inputFileName += ".v";
+  }
+
+  if (i_fileDirectory != ".") {
+    try {
+      i_libDirectory = std::filesystem::canonical(i_libDirectory);
+    } catch (std::exception &e) {
+      std::cerr << "Error occured:" << std::endl;
+      std::cout << e.what() << std::endl;
+    }
   }
 
   CommandWorkResult res =

@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 
 #include <AbcUtils.hpp>
+
+std::string fullLibPath = std::filesystem::canonical("../../tech_libs");
+std::string libPath = "../../tech_libs";
 
 TEST(GetStatsTest, ErrorWithInvalidLibraryName) {
   std::string libName = "incorrect_libname.lib";
@@ -9,7 +13,7 @@ TEST(GetStatsTest, ErrorWithInvalidLibraryName) {
       AbcUtils::getStats("correct_filename.v", libName,
                          "../../test/test_data/optimization_utils", libPath);
   std::string errorText = "Incorrect read: Cannot open input file \"" +
-                          libPath + "/" + libName + "\". \n\n";
+                          fullLibPath + "/" + libName + "\". \n\n";
   std::string errorResult = result.commandsOutput["error"];
 
   EXPECT_EQ(errorResult, errorText);
@@ -18,14 +22,14 @@ TEST(GetStatsTest, ErrorWithInvalidLibraryName) {
 TEST(GetStatsTest, ErrorWithInvalidFileName) {
   auto result = AbcUtils::getStats("correct_filename.v", "sky130.lib",
                                    "../../test/test_data/optimization_utils",
-                                   "../../tech_libs");
+                                   libPath);
   std::string readFlag = result.commandsOutput["fileRead"];
 
   EXPECT_EQ(readFlag, "true");
 
   result = AbcUtils::getStats("incorrect_filename.v", "sky130.lib",
                               "../../test/test_data/optimization_utils",
-                              "../../tech_libs");
+                              libPath);
   readFlag = result.commandsOutput["fileRead"];
 
   EXPECT_EQ(readFlag, "false");
@@ -34,13 +38,13 @@ TEST(GetStatsTest, ErrorWithInvalidFileName) {
 TEST(GetStatsTest, ErrorWithInvalidFilePath) {
   auto result = AbcUtils::getStats("correct_filename.v", "sky130.lib",
                                    "../../test/test_data/optimization_utils",
-                                   "../../tech_libs");
+                                   libPath);
   std::string readFlag = result.commandsOutput["fileRead"];
 
   EXPECT_EQ(readFlag, "true");
 
   result = AbcUtils::getStats("correct_filename.v", "sky130.lib",
-                              "incorrect_filepath", "../../tech_libs");
+                              "incorrect_filepath", libPath);
   readFlag = result.commandsOutput["fileRead"];
 
   EXPECT_EQ(readFlag, "false");
@@ -56,6 +60,5 @@ TEST(GetStatsTest, ErrorWithInvalidLibraryPath) {
       "strashed and balanced before mapping.\nThe current library "
       "is not available.\nError: Mapping has failed.\n\n";
   std::string errorResult = result.commandsOutput["error"];
-
   EXPECT_EQ(errorResult, errorText);
 }
