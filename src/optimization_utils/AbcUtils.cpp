@@ -256,6 +256,11 @@ CommandWorkResult AbcUtils::getStats(std::string i_inputFileName,
                                      std::string i_libName,
                                      std::string i_fileDirectory,
                                      std::string i_libDirectory) {
+  // if is neccessary, add .v
+  if (i_inputFileName.find(".v") == std::string::npos) {
+    i_inputFileName += ".v";
+  }
+
   if (i_fileDirectory != ".") {
     try {
       i_libDirectory = std::filesystem::canonical(i_libDirectory);
