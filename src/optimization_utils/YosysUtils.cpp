@@ -1,4 +1,3 @@
-
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -35,7 +34,7 @@ CommandWorkResult YosysUtils::standartExecutor(
   int firstPos = result.find(d_utilWord, 0);
   CommandWorkResult workResult;
 
-  bool inputParsed = false;
+  std::string inputParsed = "false";
 
   // if there was an error
   if (firstPos != std::string::npos) {
@@ -82,7 +81,7 @@ CommandWorkResult YosysUtils::standartExecutor(
       }
 
       firstPos = secondPos;
-      inputParsed = true;
+      inputParsed = "true";
     }
   } else {
     std::string errText =
